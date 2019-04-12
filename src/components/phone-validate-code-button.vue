@@ -1,16 +1,12 @@
 <template lang="pug">
-    div 
-        button(@click="change1") 旋转上
-        button(@click="change2") 旋转下
-        button(@click="change3") 中间旋转
-        button(@click="cancel") 取消数组
-        button.code-button( @click="postValidCode" :disabled="getDisabled")
-                | {{pending ? '请求中': result}}
-        div(style="padding:20px 0")
-            div.demo1(:class="themeClassArr1")
-            div.demo2(:class="themeClassArr2")
-            div.demo3(:class="themeClassArr3")
-        div {{codeNumber}} {{disabled}} {{numberBeforeText}} {{numberAfterText}}
+    span.button-box
+        button.code-button(
+                @click="postValidCode" 
+                :disabled="getDisabled" 
+                :class="themeClassArr1")
+                | {{pending ? '请求中': (codeNumber == -1 ? '发送验证码':'重新发送')}}
+        span.count(:class="themeClassArr11")
+            | {{numberBeforeText}}{{codeNumber}}s{{numberAfterText}}     
 </template>
 <script>
 // 计时器
@@ -30,6 +26,9 @@ export default {
         },
         numberAfterText:{
             default:''
+        },
+        transtion:{
+            default:'top'
         }
     },
     data(){
@@ -39,8 +38,7 @@ export default {
             pending:false,
             codeNumber:-1,
             themeClassArr1:[],
-            themeClassArr2:[],
-            themeClassArr3:[]
+            themeClassArr11:[]
         }
     },
     computed:{
@@ -52,39 +50,56 @@ export default {
             return (codeNumber && codeNumber !== 0 && codeNumber !== -1) ? `${numberBeforeText}${codeNumber}s${numberAfterText}`:(codeNumber == '0' ? '重新发送':'发送验证码');
         }
     },
+    watch:{
+        reset(val){
+            if(!val) return;
+            clearInterval(Timer);
+            this.codeNumber = -1;
+            // this.pending = false;
+        },
+        transtion:{
+            immediate: true,
+            handler(val){
+                // 动画动态配置
+                if(val === 'center'){
+                    this.themeClassArr1 = ['center-enter'];
+                    this.themeClassArr11 = ['center-leave'];
+                } else if(val === 'bottom'){
+                    this.themeClassArr1 = ['bottom-enter'];
+                    this.themeClassArr11 = ['top-leave'];
+                } else {
+                    this.themeClassArr1 = ['top-enter'];
+                    this.themeClassArr11 = ['bottom-leave'];
+                }
+            }
+        }
+    },
     methods:{
-        change1(){
-            this.themeClassArr1 = ['top-enter'];
-        },
-        change2(){
-            this.themeClassArr2 = ['bottom-enter'];
-        },
-        change3(){
-            this.themeClassArr3 = ['center-enter'];
-        },
-        cancel(){
-            this.themeClassArr1 = ['top-leave'];
-            this.themeClassArr2 = ['bottom-leave'];
-            this.themeClassArr3 = ['center-leave'];
+        onReset(){
+            this.reset = true;
         },
         postValidCode(){
-            // 模拟接口请求
+            // 模拟接口请求  mock sever
             this.pending = true;
+            this.reset = false;
             setTimeout(_=>{
                 this.start();
             },2000)
             // 接口请求失败 reset 
         },
         start(){
-            console.log('计时器开始');
             Timer = null;
             this.pending = false;
             this.codeNumber = this.number;
+            this.themeClassArr1 = ['top-leave'];
+            this.themeClassArr11 = ['bottom-enter'];
             Timer = setInterval(_=>{
-                console.log('setInterval');
                 this.codeNumber = this.codeNumber - 1;
                 if(this.codeNumber == 0){
                     clearInterval(Timer);
+                    // 默认top 动画  还未做动态配置
+                    this.themeClassArr1 = ['top-enter'];
+                    this.themeClassArr11 = ['bottom-leave'];
                 }
             },1000)
         }
@@ -96,24 +111,21 @@ export default {
 }
 </script>
 <style lang="scss">
-.demo1,.demo2{
-    width: 200px;
-    height: 100px;
-    display:inline-block;
-    background-color: green;
-    transform: scaleY(0);
-    opacity: 0;
-    border-radius: 4px;
-    background-color: #409eff;
-}
-.demo3{
-    width: 200px;
-    height: 100px;
-    display: inline-block;
-    background-color: green;
-    transform: scaleX(0);
-    border-radius: 4px;
-    background-color: #409eff;
+.button-box{
+    position: relative;
+    .count{
+        position: absolute;
+        width: 110px;
+        height: 38px;
+        left: 0;
+        border: 1px solid #f66495;
+        color: #f66495;
+        line-height: 38px;
+        text-align: center;
+        border-radius: 4px;
+        z-index:-1;
+        font-size: 14px;
+    }
 }
 // 中间旋转
 .center-enter{
@@ -168,6 +180,10 @@ export default {
     font-size: 14px;
     border-radius: 4px;
     box-sizing: border-box;
+    min-width: 112px;
+    &[disabled]{
+        background-color: #ddd;
+    }
 }
 </style>
 
