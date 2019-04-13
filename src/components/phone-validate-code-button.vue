@@ -3,9 +3,9 @@
         button.code-button(
                 @click="postValidCode" 
                 :disabled="getDisabled" 
-                :class="themeClassArr1")
+                :class="animationButton")
                 | {{pending ? '请求中': (codeNumber == -1 ? '发送验证码':'重新发送')}}
-        span.count(:class="themeClassArr11")
+        span.count(:class="animationCount")
             | {{numberBeforeText}}{{codeNumber}}s{{numberAfterText}}     
 </template>
 <script>
@@ -34,11 +34,10 @@ export default {
     data(){
         return{
             reset:false,
-            // 接口请求中
             pending:false,
             codeNumber:-1,
-            themeClassArr1:[],
-            themeClassArr11:[]
+            animationButton:[],
+            animationCount:[]
         }
     },
     computed:{
@@ -55,23 +54,6 @@ export default {
             if(!val) return;
             clearInterval(Timer);
             this.codeNumber = -1;
-            // this.pending = false;
-        },
-        transtion:{
-            immediate: true,
-            handler(val){
-                // 动画动态配置
-                if(val === 'center'){
-                    this.themeClassArr1 = ['center-enter'];
-                    this.themeClassArr11 = ['center-leave'];
-                } else if(val === 'bottom'){
-                    this.themeClassArr1 = ['bottom-enter'];
-                    this.themeClassArr11 = ['top-leave'];
-                } else {
-                    this.themeClassArr1 = ['top-enter'];
-                    this.themeClassArr11 = ['bottom-leave'];
-                }
-            }
         }
     },
     methods:{
@@ -91,15 +73,14 @@ export default {
             Timer = null;
             this.pending = false;
             this.codeNumber = this.number;
-            this.themeClassArr1 = ['top-leave'];
-            this.themeClassArr11 = ['bottom-enter'];
+            this.animationButton = ['top-leave'];
+            this.animationCount = ['bottom-enter'];
             Timer = setInterval(_=>{
                 this.codeNumber = this.codeNumber - 1;
                 if(this.codeNumber == 0){
                     clearInterval(Timer);
-                    // 默认top 动画  还未做动态配置
-                    this.themeClassArr1 = ['top-enter'];
-                    this.themeClassArr11 = ['bottom-leave'];
+                    this.animationButton = [];
+                    this.animationCount = [];
                 }
             },1000)
         }
@@ -111,22 +92,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.button-box{
-    position: relative;
-    .count{
-        position: absolute;
-        width: 110px;
-        height: 38px;
-        left: 0;
-        border: 1px solid #f66495;
-        color: #f66495;
-        line-height: 38px;
-        text-align: center;
-        border-radius: 4px;
-        z-index:-1;
-        font-size: 14px;
-    }
-}
+$color:#f66495;
 // 中间旋转
 .center-enter{
     transform: scaleX(1);
@@ -138,8 +104,8 @@ export default {
 }
 // 从上
 .bottom-enter{
-    opacity: 1;
-    transform: scaleY(1);
+    opacity: 1!important;
+    transform: scaleY(1)!important;
     transition: transform .3s cubic-bezier(.23,1,.32,1),opacity .3s cubic-bezier(.23,1,.32,1);
     transform-origin: bottom center;
 }
@@ -157,15 +123,15 @@ export default {
     transform-origin: top center;
 }
 .top-leave{
-    opacity: 0;
-    transform: scaleY(0);
+    opacity: 0!important;
+    transform: scaleY(0)!important;
     transition: transform .3s cubic-bezier(.23,1,.32,1),opacity .3s cubic-bezier(.23,1,.32,1);
     transform-origin: top center;
 }
 .code-button{
     color: #fff;
-    background-color: #f66495;
-    border-color: #f66495;
+    background-color: $color;
+    border-color: $color;
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
@@ -181,9 +147,27 @@ export default {
     border-radius: 4px;
     box-sizing: border-box;
     min-width: 112px;
+    @extend .top-enter;
     &[disabled]{
         background-color: #ddd;
     }
+}
+.count{
+    position: absolute;
+    width: 110px;
+    height: 38px;
+    left: 0;
+    border: 1px solid$color;
+    color:$color;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 4px;
+    z-index:-1;
+    font-size: 14px;
+    @extend .bottom-leave;
+}
+.button-box{
+    position: relative;
 }
 </style>
 

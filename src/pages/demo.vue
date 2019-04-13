@@ -43,7 +43,10 @@ export default {
     methods:{
         onInputChange(){
             const { value } = this;
-            if(!value || !regexRule.mobile.test(value)) return;
+            if(!value || !regexRule.mobile.test(value)){
+                this.disabled = true;
+                return;
+            };
             this.disabled = false;
             this.error = false;
         },

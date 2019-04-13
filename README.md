@@ -1,6 +1,15 @@
 # phone-validate-code-button
 
-> phone-validate-code-button
+> 基于 Vue CLI 的发送验证码组件。
+
+## 追加的依赖
+* npm install pug
+
+## 组装
+* 使用scss预处理器
++ $color定义组件配色，参照B站主题色。
++ 按钮动画参照element-ui内置过渡动画，页面中一共定义了三种，为上，下，中间的效果，理想情况可在上级组件传入动画主题。
+
 
 ## Build Setup
 
@@ -23,5 +32,3 @@ npm run unit
 # run all tests
 npm test
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
