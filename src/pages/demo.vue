@@ -1,6 +1,6 @@
 <template lang="pug">
-    div 
-        div 操作页面：
+    div.demo-page 
+        div 可成功发送验证码手机号: 13000001111  13100001111 13200001111
         div.content
             div 
                 input.input(
@@ -10,8 +10,7 @@
                     v-on:input="onInputChange"
                     v-on:blur="onBlurChange")
                 PhoneValidateVodeButton(
-                    class="button"
-                    transition="top"  
+                    class="demo-button"
                     :phone="value" 
                     :disabled = "disabled"
                     :number = "number"
@@ -31,7 +30,7 @@ export default {
     data(){
         return{
             disabled:true,
-            number:5,
+            number:60,
             numberBeforeText:'请耐心等待',
             numberAfterText:'',
             error:false,
@@ -60,37 +59,41 @@ export default {
 }
 </script>
 <style lang="scss">
-.content{
-    padding-top: 12px;
-    .input{
-        -webkit-appearance: none;
-        background-color: #fff;
-        background-image: none;
-        border-radius: 4px;
-        border: 1px solid #dcdfe6;
-        box-sizing: border-box;
-        color: #606266;
-        display: inline-block;
-        font-size: inherit;
-        height: 40px;
-        line-height: 40px;
-        outline: none;
-        padding: 0 15px;
-        transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-        width: 180px;
-        margin-right: 12px;
-        &:focus{
+.demo-page{
+    width: 1000px;
+    margin: 0 auto;
+    .content{
+        padding-top: 12px;
+        .input{
+            -webkit-appearance: none;
+            background-color: #fff;
+            background-image: none;
+            border-radius: 4px;
+            border: 1px solid #dcdfe6;
+            box-sizing: border-box;
+            color: #606266;
+            display: inline-block;
+            font-size: inherit;
+            height: 40px;
+            line-height: 40px;
             outline: none;
-            border-color: #409eff;
+            padding: 0 15px;
+            transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+            width: 180px;
+            margin-right: 12px;
+            &:focus{
+                outline: none;
+                border-color: #409eff;
+            }
+            &.error{
+                border-color: #f66495;
+            }
         }
-        &.error{
-            border-color: #f66495;
+        .tips{
+            color: #f66495;
+            font-size: 12px;
+            padding: 6px 0;
         }
-    }
-    .tips{
-        color: #f66495;
-        font-size: 12px;
-        padding: 6px 0;
     }
 }
 </style>

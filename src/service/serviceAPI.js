@@ -5,6 +5,6 @@ export default {
         return rs.post(`sendCode/${phone}`);
     },
     getCode(phone){
-        return rs.get(`api/sendCode`);
+        return rs.get(`api/sendCode/${phone}`);
     }
 }

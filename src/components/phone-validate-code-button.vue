@@ -14,10 +14,9 @@ import request from '@/service/serviceAPI'
 let Timer = null;
 
 export default {
-    // 设置默认值 防止不传的情况 phone必传
     props:{
         phone:{
-            required: true
+            required: true,
         },
         disabled:{
             default:false
@@ -31,9 +30,6 @@ export default {
         numberAfterText:{
             default:''
         },
-        transtion:{
-            default:'top'
-        }
     },
     data(){
         return{
@@ -61,7 +57,6 @@ export default {
         }
     },
     destroyed(){ 
-        // 页面卸载 防止内存泄露 写错了
         clearInterval(Timer);
     },
     methods:{
@@ -74,19 +69,23 @@ export default {
             this.reset = false;
             request.getCode(phone).then(
                 res =>{
-                    // 接口请求成功 开始倒计时
-                    this.start();
+                    if(res.code === '1000000'){
+                        this.start();
+                    }else{
+                        this.reset = true;
+                    }
+                    alert(res.message);
                 },
                 err =>{
-                    // 接口出错 按钮reset
-                    console.log(err);
+                    alert('网络错误 ' + '或者请运行 npm run mock');
                     this.reset = true;
                 }
-            );
+            ).then(_=>{
+                this.pending = false;
+            });
         },
         start(){
             Timer = null;
-            this.pending = false;
             this.codeNumber = this.number;
             this.animationButton = ['top-leave'];
             this.animationCount = ['bottom-enter'];
