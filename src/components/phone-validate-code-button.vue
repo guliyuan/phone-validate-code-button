@@ -9,12 +9,16 @@
             | {{numberBeforeText}}{{codeNumber}}s{{numberAfterText}}     
 </template>
 <script>
-// 计时器
+import request from '@/service/serviceAPI'
+
 let Timer = null;
 
 export default {
-    // 设置默认值 防止不传的情况
+    // 设置默认值 防止不传的情况 phone必传
     props:{
+        phone:{
+            required: true
+        },
         disabled:{
             default:false
         },
@@ -56,18 +60,29 @@ export default {
             this.codeNumber = -1;
         }
     },
+    destroyed(){ 
+        // 页面卸载 防止内存泄露 写错了
+        clearInterval(Timer);
+    },
     methods:{
         onReset(){
             this.reset = true;
         },
         postValidCode(){
-            // 模拟接口请求  mock sever
+            const { phone } = this;
             this.pending = true;
             this.reset = false;
-            setTimeout(_=>{
-                this.start();
-            },2000)
-            // 接口请求失败 reset 
+            request.getCode(phone).then(
+                res =>{
+                    // 接口请求成功 开始倒计时
+                    this.start();
+                },
+                err =>{
+                    // 接口出错 按钮reset
+                    console.log(err);
+                    this.reset = true;
+                }
+            );
         },
         start(){
             Timer = null;
@@ -85,10 +100,6 @@ export default {
             },1000)
         }
     },
-    mounted(){
-        // 页面卸载 防止内存泄露
-        clearInterval(Timer);
-    }
 }
 </script>
 <style lang="scss">

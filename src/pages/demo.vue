@@ -12,6 +12,7 @@
                 PhoneValidateVodeButton(
                     class="button"
                     transition="top"  
+                    :phone="value" 
                     :disabled = "disabled"
                     :number = "number"
                     :numberBeforeText="numberBeforeText"

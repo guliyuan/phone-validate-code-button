@@ -1,14 +1,18 @@
 # phone-validate-code-button
 
-> 基于 Vue CLI 的发送验证码组件。
+> 基于 Vue CLI 的发送验证码按钮组件。
 
 ## 追加的依赖
 * npm install pug
 
 ## 组装
 * 使用scss预处理器
-+ $color定义组件配色，参照B站主题色。
-+ 按钮动画参照element-ui内置过渡动画，页面中一共定义了三种，为上，下，中间的效果，理想情况可在上级组件传入动画主题。
+    - 1 $color定义组件配色，参照B站主题色。
+    - 2 按钮动画参照element-ui内置过渡动画，页面中一共定义了三种，为上，下，中间的效果，理想情况可在上级组件传入动画主题。
+* deme.vue 操作示例页面
+    - 1 
+
+
 
 
 ## Build Setup
