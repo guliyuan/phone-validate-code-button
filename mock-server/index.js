@@ -5,16 +5,8 @@ const app = express();
 
 app.use(cors())
 app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
 
 const existPhoneArr = ['13000001111','13100001111','13200001111']; 
-// var allowCrossDomain = function(req, res, next){
-//     res.header('Access-Control-Allow-Origin','*');
-//     res.header('Access-Control-Allow-Methods','GET,POST,PUT');
-//     return next();
-//     }
-    
-// app.use(allowCrossDomain);
 
 app.get(`/api/sendCode/:phone`,(req,res)=>{
     res.type('application/json');

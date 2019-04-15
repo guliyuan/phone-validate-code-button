@@ -43,10 +43,6 @@ export default {
     computed:{
         getDisabled(){
             return this.disabled || (this.codeNumber > 0) || this.pending
-        },
-        result(){
-            const { codeNumber ,numberBeforeText,numberAfterText} = this;
-            return (codeNumber && codeNumber !== 0 && codeNumber !== -1) ? `${numberBeforeText}${codeNumber}s${numberAfterText}`:(codeNumber == '0' ? '重新发送':'发送验证码');
         }
     },
     watch:{

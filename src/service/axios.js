@@ -23,18 +23,5 @@ export default {
             reject(err);
           });
         });
-      },
-      post(url, param) {
-        return new Promise((resolve, reject) => {
-          axios({
-            method: 'post',
-            url,
-            data: param,
-          }).then((res) => {
-            resolve(res);
-          }).catch((err) => {
-            reject(err);
-          });
-        });
-      },
+      }
 }
