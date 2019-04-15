@@ -63,20 +63,18 @@ export default {
             const { phone } = this;
             this.pending = true;
             this.reset = false;
-            request.getCode(phone).then(
-                res =>{
+            this.request.get(`api/sendCode/${phone}`).then(
+                res=>{
                     if(res.code === '1000000'){
                         this.start();
                     }else{
                         this.reset = true;
                     }
                     alert(res.message);
-                },
-                err =>{
+                },err=>{
                     alert('网络错误 ' + '或者请运行 npm run mock');
                     this.reset = true;
-                }
-            ).then(_=>{
+            }).then(_=>{
                 this.pending = false;
             });
         },

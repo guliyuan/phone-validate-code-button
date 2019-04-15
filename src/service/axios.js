@@ -13,15 +13,10 @@ axios.interceptors.response.use((response) => {
   
 export default {
     get(url) {
-        return new Promise((resolve, reject) => {
-          axios({
-            method: 'get',
-            url
-          }).then((res) => {
-            resolve(res);
-          }).catch((err) => {
-            reject(err);
-          });
+        axios({method: 'get',url}).then((res) => {
+          resolve(res);
+        }).catch((err) => {
+          reject(err);
         });
       }
 }
